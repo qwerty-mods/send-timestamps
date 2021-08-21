@@ -10,6 +10,7 @@ const ChannelTextAreaContainer = getModule(
 
 const DiyTimestamp = require('./components/modal')
 const Button = require('./components/Button');
+const Settings = require('./components/Settings');
 
 module.exports = class SendTimestamps extends Plugin {
     startPlugin() {
@@ -20,22 +21,30 @@ module.exports = class SendTimestamps extends Plugin {
             executor: this.timestamp.bind(this),
         });
 
+        powercord.api.settings.registerSettings(this.entityID, {
+            category: this.entityID,
+            label: 'Send Timestamps',
+            render: Settings
+        });
+
         inject(
             "diy-timestamp-button",
             ChannelTextAreaContainer.type,
             "render",
             (args, res) => {
                 // Add to the buttons.
-                const props = findInReactTree(
-                    res,
-                    (r) =>
-                    r && r.className && r.className.indexOf("buttons-") == 0
-                );
-                props.children.unshift(
-                    React.createElement(Button, {
-                        onClick: () => this.timestamp()
-                    })
-                );
+                if (!this.settings.get("remove-button")) {
+                    const props = findInReactTree(
+                        res,
+                        (r) =>
+                        r && r.className && r.className.indexOf("buttons-") == 0
+                    );
+                    props.children.unshift(
+                        React.createElement(Button, {
+                            onClick: () => this.timestamp()
+                        })
+                    );
+                }
 
                 return res;
             }
