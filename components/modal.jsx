@@ -8,6 +8,8 @@ const { settings: {FormItem}, FormTitle, Button } = require("powercord/component
 const DateInput = getModuleByDisplayName("DateInput", false);
 const TimeInput = getModuleByDisplayName("TimeInput", false);
 
+const Preview = require('./Preview.jsx')
+
 module.exports = class DiyTimestamp extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -31,6 +33,8 @@ module.exports = class DiyTimestamp extends React.PureComponent {
                 </Modal.Header>
 
                 <Modal.Content>
+                    <Preview code={this.get_code()}/>
+                    <FormItem title=" "/> {/* separater */}
                     <FormItem title="Enter Date: ">
                         <DateInput
                             title="Date"
@@ -66,22 +70,8 @@ module.exports = class DiyTimestamp extends React.PureComponent {
                     <Button
                         color={Button.Colors.GREEN}
                         disabled={this.state.format.value == ""}
-                        onClick={() => {
-                                let timestamp = new Date();
-                        
-                                timestamp.setDate(this.state.date._d.getDate());
-                                timestamp.setMonth(this.state.date._d.getMonth());
-                                timestamp.setFullYear(this.state.date._d.getFullYear());
-                        
-                                timestamp.setHours(this.state.time._d.getHours());
-                                timestamp.setMinutes(this.state.time._d.getMinutes());
-                                timestamp.setSeconds(this.state.time._d.getSeconds());
-                        
-                                console.log(this.state);
-                        
-                                clipboard.writeText(
-                                    `<t:${Math.floor(timestamp.getTime()/1000)}:${this.state.format.value}>`
-                                );
+                        onClick={() => {                        
+                                clipboard.writeText(this.get_code());
 
                                 closeModal()
                             }
@@ -97,5 +87,19 @@ module.exports = class DiyTimestamp extends React.PureComponent {
                 </Modal.Footer>
             </Modal>
         )
+    }
+
+    get_code() {
+        let timestamp = new Date();
+                        
+        timestamp.setDate(this.state.date._d.getDate());
+        timestamp.setMonth(this.state.date._d.getMonth());
+        timestamp.setFullYear(this.state.date._d.getFullYear());
+
+        timestamp.setHours(this.state.time._d.getHours());
+        timestamp.setMinutes(this.state.time._d.getMinutes());
+        timestamp.setSeconds(this.state.time._d.getSeconds());
+
+        return `<t:${Math.floor(timestamp.getTime()/1000)}:${this.state.format.value}>`
     }
 }
