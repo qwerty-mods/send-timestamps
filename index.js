@@ -33,7 +33,7 @@ module.exports = class SendTimestamps extends Plugin {
             "render",
             (args, res) => {
                 // Add to the buttons.
-                if (!this.settings.get("remove-button")) {
+                if (!this.settings.get("remove-button", false)) {
                     const props = findInReactTree(
                         res,
                         (r) =>
@@ -51,11 +51,21 @@ module.exports = class SendTimestamps extends Plugin {
         );
 
         ChannelTextAreaContainer.type.render.displayName = "ChannelTextAreaContainer";
+
+        inject('diy-timestamp-contextmenu', SlateTextAreaContextMenu, 'default', (args, res) => {
+            console.log("d");
+            console.log(args);
+            console.log(res);
+        })
+
+        SlateTextAreaContextMenu.default.displayName = "SlateTextAreaContextMenu";
     }
 
     pluginWillUnload() {
-        powercord.api.commands.unregisterCommand('timestamp')
-        uninject('diy-timestamp-button')
+        powercord.api.commands.unregisterCommand('timestamp');
+        uninject('diy-timestamp-button');
+        powercord.api.settings.unregisterSettings(this.entityID);
+        uninject('diy-timestamp-contextmenu')
     }
 
     timestamp() {
