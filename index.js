@@ -51,14 +51,6 @@ module.exports = class SendTimestamps extends Plugin {
         );
 
         ChannelTextAreaContainer.type.render.displayName = "ChannelTextAreaContainer";
-
-        inject('diy-timestamp-contextmenu', SlateTextAreaContextMenu, 'default', (args, res) => {
-            console.log("d");
-            console.log(args);
-            console.log(res);
-        })
-
-        SlateTextAreaContextMenu.default.displayName = "SlateTextAreaContextMenu";
     }
 
     pluginWillUnload() {
