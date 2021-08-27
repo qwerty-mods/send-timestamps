@@ -24,8 +24,21 @@ module.exports = class DiyTimestamp extends React.PureComponent {
     }
 
     render() {
-        const formats = [{value: "t", label: "Short Time"}, {value: "T", label: "Long Time"}, {value: "d", label: "Short Date"}, {value: "D", label: "Long Date"}, {value: "f", label: "Short Date/Time"}, {value: "F", label: "Long Date/Time"}, {value: "R", label: "Relative Time"}]
-
+        let time = this.state.time._d
+        let date = this.state.date._d
+        let hrMin = time.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+        let hrMinSec = time.toLocaleString('en-US', {hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true})
+        let shortDate = date.toLocaleDateString('en-US')
+        let longDate = date.toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'})
+        let longerDate = date.toLocaleDateString('en-US', {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'})
+        const formats = [{value: "t", label: hrMin},
+                         {value: "T", label: hrMinSec},
+                         {value: "d", label: shortDate},
+                         {value: "D", label: longDate},
+                         {value: "f", label: `${longDate} ${hrMin}`},
+                         {value: "F", label: `${longerDate} ${hrMin}`},
+                         {value: "R", label: 'Relative'}
+                        ]
         return (
             <Modal className="powercord-text">
                 <Modal.Header>
@@ -33,8 +46,6 @@ module.exports = class DiyTimestamp extends React.PureComponent {
                 </Modal.Header>
 
                 <Modal.Content>
-                    <Preview code={this.get_code()}/>
-                    <FormItem title=" "/> {/* separater */}
                     <FormItem title="Enter Date: ">
                         <DateInput
                             title="Date"
