@@ -8,12 +8,13 @@ const ChannelTextAreaContainer = getModule(
     (m) => m.type && m.type.render && m.type.render.displayName === "ChannelTextAreaContainer", false
 );
 
+
 const DiyTimestamp = require('./components/modal')
 const Button = require('./components/Button');
 const Settings = require('./components/Settings');
 
 module.exports = class SendTimestamps extends Plugin {
-    startPlugin() {
+    async startPlugin() {
         powercord.api.commands.registerCommand({
             command: 'timestamp',
             usage: '',
@@ -51,6 +52,30 @@ module.exports = class SendTimestamps extends Plugin {
         );
 
         ChannelTextAreaContainer.type.render.displayName = "ChannelTextAreaContainer";
+
+        const SlateTextAreaContextMenu = await getModule(m => m.default?.displayName === "SlateTextAreaContextMenu");
+        const Menu = await getModule([ 'MenuItem' ]);
+
+        inject('diy-timestamp-contextmenu', SlateTextAreaContextMenu, 'default', (args, res) => {
+			if (!res?.props?.children) return res;
+
+            const children = res.props.children;
+
+            let InsertBtn = React.createElement(Menu.MenuItem, {
+                id: "insert-timestamp-btn",
+                label: "Insert Timestamp",
+                action: this.timestamp
+            });
+
+            children.push([
+                React.createElement(Menu.MenuSeparator),
+                React.createElement(Menu.MenuGroup, {}, InsertBtn)
+            ])
+
+            return res;
+        })
+
+        SlateTextAreaContextMenu.default.displayName = "SlateTextAreaContextMenu";
     }
 
     pluginWillUnload() {
