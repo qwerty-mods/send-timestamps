@@ -31,6 +31,8 @@ const ChannelMessage = getModule([ 'getElementFromMessageId' ], false).default;
 const Message = getModule(m => m.prototype && m.prototype.getReaction && m.prototype.isSystemDM, false);
 const discordSettings = getModule([ 'messageDisplayCompact' ], false);
 
+const currentUser = getModule(['getCurrentUser'], false).getCurrentUser();
+
 const CHANNEL = {
   isPrivate: () => false,
   isSystemDM: () => false,
@@ -44,12 +46,12 @@ const get_msg = (code) => {return new Message({
     type: 19,
     author: {
         id: 'b',
-        username: 'I Won The Game',
-        toString: () => 'I Won The Game',
+        username: currentUser.username,
+        toString: () => currentUser.username,
         isSystemUser: () => false,
         isVerifiedBot: () => false,
         isNonUserBot: () => false,
-        getAvatarURL: () => 'https://cdn.discordapp.com/avatars/499400512559382538/f7d9d4f3992736dd18855b64a7d3561d.webp?size=128'
+        getAvatarURL: () => currentUser.getAvatarURL()
     },
     content: code
     });
