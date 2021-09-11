@@ -15,6 +15,7 @@ const Settings = require('./components/Settings');
 
 module.exports = class SendTimestamps extends Plugin {
     async startPlugin() {
+        this.loadStylesheet('style.css');
         powercord.api.commands.registerCommand({
             command: 'timestamp',
             usage: '',

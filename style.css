@@ -1,0 +1,8 @@
+.diy-timestamp-preview {
+    margin-bottom: 20px;
+    pointer-events: none;
+}
+  
+.diy-timestamp-preview * {
+    pointer-events: none !important;
+}
