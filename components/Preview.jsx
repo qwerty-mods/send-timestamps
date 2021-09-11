@@ -31,8 +31,6 @@ const ChannelMessage = getModule([ 'getElementFromMessageId' ], false).default;
 const Message = getModule(m => m.prototype && m.prototype.getReaction && m.prototype.isSystemDM, false);
 const discordSettings = getModule([ 'messageDisplayCompact' ], false);
 
-const currentUser = getModule(['getCurrentUser'], false).getCurrentUser();
-
 const CHANNEL = {
   isPrivate: () => false,
   isSystemDM: () => false,
@@ -41,19 +39,21 @@ const CHANNEL = {
   isThread: () => false
 };
 
-const get_msg = (code) => {return new Message({
-    id: 'uwu',
-    type: 19,
-    author: {
-        id: 'b',
-        username: currentUser.username,
-        toString: () => currentUser.username,
-        isSystemUser: () => false,
-        isVerifiedBot: () => false,
-        isNonUserBot: () => false,
-        getAvatarURL: () => currentUser.getAvatarURL()
-    },
-    content: code
+const get_msg = (code) => {
+    const currentUser = getModule(['getCurrentUser'], false).getCurrentUser();
+    return new Message({
+        id: 'uwu',
+        type: 19,
+        author: {
+            id: 'b',
+            username: currentUser.username,
+            toString: () => currentUser.username,
+            isSystemUser: () => false,
+            isVerifiedBot: () => false,
+            isNonUserBot: () => false,
+            getAvatarURL: () => currentUser.getAvatarURL()
+        },
+        content: code
     });
 };
 
