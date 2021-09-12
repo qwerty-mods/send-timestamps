@@ -58,6 +58,10 @@ module.exports = class SendTimestamps extends Plugin {
         const Menu = await getModule([ 'MenuItem' ]);
 
         inject('diy-timestamp-contextmenu', SlateTextAreaContextMenu, 'default', (args, res) => {
+            if (this.settings.get('remove-context', false)) {
+                res.props.onContextMenu = _ => {};
+                return res;
+            }
 			if (!res?.props?.children) return res;
 
             const children = res.props.children;

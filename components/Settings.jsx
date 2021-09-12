@@ -9,4 +9,11 @@ module.exports = ({ getSetting, toggleSetting }) => <>
         }}
         note="When enabled, the button in the Message Box will be removed."
     >Remove Timestamp Button</SwitchItem>
+    <SwitchItem
+        value={getSetting('remove-context', false)}
+        onChange={() => {
+            toggleSetting('remove-context', false)
+        }}
+        note="When enabled, the button in the MessageBox's ContextMenu will be removed."
+    >Remove Timestamp Button From Context Menu</SwitchItem>
 </>
