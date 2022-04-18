@@ -15,6 +15,26 @@ const Settings = require('./components/Settings');
 
 module.exports = class SendTimestamps extends Plugin {
     async startPlugin() {
+	    powercord.api.notices.sendAnnouncement("upload-commands-deprecation", { // Thanks to Oocrop's deprecation in better-settings
+            color: "red",
+            message: React.createElement(
+                "div",
+                null,
+                "Send-Timestamps is deprecated in favor of ",
+                React.createElement(
+                    "a",
+                    { href: "https://github.com/SpoonMcForky/replace-timestamps-pc" },
+                    "replace-timestamps-pc"
+                ),
+                "."
+            ),
+            button: {
+                onClick: () =>
+                    powercord.pluginManager.disable("send-timestamps"),
+                text: "Disable the plugin"
+            }
+        });
+        return;
         this.loadStylesheet('style.css');
         powercord.api.commands.registerCommand({
             command: 'timestamp',
